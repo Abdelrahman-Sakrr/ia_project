@@ -1,3 +1,9 @@
+<?php
+// next line means you imported all classes inside the folder name class
+require_once("../vendor/autoload.php"); 
+$myObj = new \App\DB();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
