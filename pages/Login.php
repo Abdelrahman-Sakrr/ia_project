@@ -1,9 +1,14 @@
 <?php
 // next line means you imported all classes inside the folder name class
 require_once("../vendor/autoload.php"); 
+$errorMsg=''; 	
+// -----------------
 $myObj = new \App\DB();
 $conn = $myObj->Connection;
-$errorMsg='';
+// -----------------
+$authontication = new \App\Auth();
+$authontication->redirectIfAuthorized();
+// -----------------
 
 if(isset($_POST['loginBtn'])){
 	$email = $_POST['email'];
@@ -18,6 +23,8 @@ if(isset($_POST['loginBtn'])){
 		if($result->num_rows==1){
 			$row = $result-> fetch_assoc(); 
 			if(password_verify($password , $row["password"])){
+				$_SESSION["userID"] = $row["id"];
+				$_SESSION["userName"] = $row["name"];
 				header("Location: Home.php");
 			}else{
 				$errorMsg = "Invalid Email Or Password";
@@ -46,7 +53,7 @@ if(isset($_POST['loginBtn'])){
 	<form class="form-container" method="post">
 	<?php if(isset($_GET['signUp'])){
 			echo "<h6 class='alert alert-success text-center'>Account Created Successfully</h6>";
-			unset($_GET['signUp']);
+			// unset($_GET['signUp']);
 			}
 			if ($errorMsg){
 				echo "<h6 class='alert alert-success text-center'>$errorMsg</h6>";

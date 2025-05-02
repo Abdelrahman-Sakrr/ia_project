@@ -1,6 +1,9 @@
 <?php
 // next line means you imported all classes inside the folder name class
 require_once("../vendor/autoload.php"); 
+$authontication = new \App\Auth();
+$authontication->redirectIfAuthorized();
+
 $myDB = new \App\DB();
 $errorMsg = '';
 if(isset($_POST['signUpBtn'])){
@@ -18,7 +21,7 @@ if(isset($_POST['signUpBtn'])){
 		$responseStatus = $query->execute();
 		echo $responseStatus;
 		if ($responseStatus) {
-			header(header:'location:index.php?signUp=1');
+			header(header:'location:Login.php?signUp=1');
 		} else {
 			$errorMsg = "Something went wrong. Please try again.";
 		}
@@ -67,7 +70,7 @@ if(isset($_POST['signUpBtn'])){
 		</div>
 
 		<div class="form-check mb-3 text-end">
-			<a href="index.php" class="text-decoration-none text-primary">Already have an account?</a>
+			<a href="Login.php" class="text-decoration-none text-primary">Already have an account?</a>
 		</div>
 
 		<button type="submit" name="signUpBtn" class="btn btn-primary w-100">Sign Up</button>
