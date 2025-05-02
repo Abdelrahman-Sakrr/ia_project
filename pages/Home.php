@@ -2,12 +2,14 @@
 require_once("../vendor/autoload.php"); 
 $myDB = new \App\DB();
 $authontication = new \App\Auth();
+$Game = new \App\Game();
 $authontication->redirectUnAuthorizedUsers();	
 $authontication->handleLogOut();
 $query = $myDB->Connection->prepare("SELECT * FROM games");
 $query->execute();
 $result = $query->get_result();
 $games = $result->fetch_all(MYSQLI_ASSOC);
+$Game->deleteGame()
 
 
 
@@ -26,22 +28,6 @@ $games = $result->fetch_all(MYSQLI_ASSOC);
 <?php require_once 'layout/Navbar.php'; ?>
 <?php require_once 'layout/Navbar.php'; ?>
 
-<?php if (isset($_GET['created'])): ?>
-<div class="toast show position-fixed bottom-0 end-0 m-3 bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-header text-white bg-success">
-    <strong class="me-auto">Success</strong>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-  <div class="toast-body">
-    Game was created successfully!
-  </div>
-</div>
-<script>
-  const toastEl = document.querySelector('.toast');
-  if (toastEl) new bootstrap.Toast(toastEl, { delay: 3000 }).hide();
-</script>
-<?php endif; ?>
-
 <div class="container mt-5">
   <h2 class="mb-4 text-center text-primary">All Games</h2>
   <div class="row">
@@ -56,10 +42,10 @@ $games = $result->fetch_all(MYSQLI_ASSOC);
               </p>
             </div>
             <div class="d-flex justify-content-end gap-2">
-              <a href="editGame.php?id=<?= $game['id'] ?>" class="btn btn-sm btn-outline-primary" title="Edit">
+              <a href="EditGame.php?gameId=<?= $game['id'] ?>" class="btn btn-sm btn-outline-primary" title="Edit">
                 Update
               </a>
-              <a href="deleteGame.php?id=<?= $game['id'] ?>" class="btn btn-sm btn-outline-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this game?')">
+              <a href="?deletGameId=<?php echo $game["id"]?>" type="button" class="btn btn-sm btn-outline-danger" name="deleteGameBtn" title="Delete">
                 Delete
               </a>
             </div>
@@ -67,9 +53,26 @@ $games = $result->fetch_all(MYSQLI_ASSOC);
         </div>
       </div>
     <?php endforeach; ?>
+    <?php $Toaster = new \App\Toaster();
+    echo $Toaster->showToaster("created" , "Created Successfully");
+    echo $Toaster->showToaster("updated" , "Updated Successfully");
+    echo $Toaster->showToaster("deleted" , "Deleted Successfully")
+?>
   </div>
 </div>
-	<script src="/assets/js/home.js"></script>
-	<script src="/assets/js/bootstrap.min.js"></script>
+	<script src="../assets/js/home.js"></script>
+	<script src="../../assets/js/bootstrap.min.js"></script>
+  <script>
+	document.querySelectorAll(".toast").forEach((toastEl) => {
+		const closeBtn = toastEl.querySelector(".btn-close");
+		if (closeBtn) {
+		  closeBtn.addEventListener("click", () => {
+			toastEl.classList.remove("show");
+			toastEl.classList.add("hide");
+			setTimeout(() => toastEl.remove(), 300); // Wait for animation
+		  });
+		}
+	  });
+</script>
 </body>
 </html>
