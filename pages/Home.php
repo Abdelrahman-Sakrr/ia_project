@@ -9,7 +9,8 @@
 </head>
 <body>
 
-<!-- <?php require_once 'layout/Navbar.php'; ?> -->
+<?php require_once 'layout/Navbar.php'; ?>
+ Home
 	<script src="/assets/js/home.js"></script>
 	<script src="/assets/js/"></script>
 </body>

@@ -2,6 +2,7 @@
 // next line means you imported all classes inside the folder name class
 require_once("../vendor/autoload.php"); 
 $myObj = new \App\DB();
+$conn = $myObj->Connection;
 $errorMsg='';
 
 if(isset($_POST['loginBtn'])){
@@ -9,7 +10,7 @@ if(isset($_POST['loginBtn'])){
 	$password = $_POST['password'];
 	$hashedPassword = password_hash($password , algo:PASSWORD_DEFAULT);
 	$selectStatment = "Select * from `users` where email = ?";
-	$queryStatment = $myObj->$Connection->prepare($selectStatment);
+	$queryStatment = $conn->prepare($selectStatment);
 	$queryStatment->bind_param("s", $email);
 	$queryStatus = $queryStatment->execute();
 	if($queryStatus){
