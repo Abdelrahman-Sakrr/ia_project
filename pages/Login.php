@@ -56,7 +56,7 @@ if(isset($_POST['loginBtn'])){
 			// unset($_GET['signUp']);
 			}
 			if ($errorMsg){
-				echo "<h6 class='alert alert-success text-center'>$errorMsg</h6>";
+				echo "<h6 class='alert alert-danger text-center'>$errorMsg</h6>";
 			}?>
 	<h2 class="text-center mb-4">Login</h2>
 	  <div class="form-group mb-3">
